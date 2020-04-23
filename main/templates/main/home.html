@@ -1,0 +1,49 @@
+{% extends 'main/header.html' %}
+ {% block content %}
+	 <div class="container row">
+		<div class="col s12">
+			{% if error %}
+			<p>{{error}}</p>
+			{% endif %}
+			<form method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="input-field col s12 m12 l12">
+					{{ form.vehicle_no.label_tag }} {{form.vehicle_no}}
+					{% if form.vehicle_no.errors %}
+						<p>{{ form.vehicle_no.errors }}</p>
+					{% endif %}	
+				</div>
+				<div class="input-field col s12 m12 l12">	
+					<div class="row">
+						<div class="col s12 m12 l6" style="font-size: 17">
+							{{ form.vehicle_img.label_tag }}
+						</div>
+						<div class="col s12 m12 l6">
+							<p id="response" style="display: inline-block;margin-right:20px">No file selected</p>
+							<button type="button" class="btn purple" onclick="handleFile();">Browse</button>
+						</div>
+					<div hidden = 'true' id = 'file-input'>{{form.vehicle_img}}</div>
+					{% if form.vehicle_img.errors %}
+						<p>{{ form.vehicle_img.errors }}</p>
+					{% endif %}	
+				</div>
+				<div class="col s12 m12 l12">
+					<button type="submit" class="btn" style="width:100%;">Submit</button> 
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<script>
+		let uploadInput = document.getElementById('file-input').childNodes[0];
+		let reponse = document.getElementById('response');
+		uploadInput.addEventListener('change', (event) => {
+			console.log("File Selected", event.target.value);
+			response.innerHTML = !!event.target.value.length ? event.target.value : 'No file selected.';	
+		});
+		function handleFile(e){
+			uploadInput.click();
+		}
+	</script>
+ {% endblock %}
+
